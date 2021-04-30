@@ -364,7 +364,10 @@
 			    window.web3 = new Web3(ethereum);
 			    try {
 				await ethereum.enable();
-				accountaddress = web3.givenProvider.selectedAddress;
+				web3.eth.getAccounts(function (err, addresses) {
+					accountaddress = addresses[0];
+				});
+// 				accountaddress = web3.givenProvider.selectedAddress;
 			    } catch (error) {
 				//error
 			    }
