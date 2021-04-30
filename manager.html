@@ -400,13 +400,18 @@
 			window.web3 = new Web3(ethereum);
 			try {
 				await ethereum.enable();
+				var defaultAccount = web3.eth.defaultAccount;
+				if(!defaultAccount) {
+					web3.eth.defaultAccount = web3.eth.accounts[0];
+					defaultAccont = web3.eth.accounts[0];
+				}
+				alert("defaultAccount");
 				accountaddress = window.web3.givenProvider.selectedAddress;
 				alert("測試1");
 				ballotContract = new web3.eth.Contract(abi);
 				alert("測試2");
 			} catch (error) {
 				alert("error");
-				//error
 			}
 		}
 		else {
