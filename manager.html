@@ -399,6 +399,7 @@
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try {
+				alert("c");
 				await ethereum.enable();
 				alert(web3.eth.accounts);
 				accountaddress = web3.givenProvider.selectedAddress;
