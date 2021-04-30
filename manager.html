@@ -400,11 +400,10 @@
 			window.web3 = new Web3(ethereum);
 			try {
 				await ethereum.enable();
+				accountaddress = window.web3.givenProvider.selectedAddress;
 				alert("測試1");
-				accountaddress = web3.givenProvider.selectedAddress;
-				alert("測試2");
 				ballotContract = new web3.eth.Contract(abi);
-				alert("測試3");
+				alert("測試2");
 			} catch (error) {
 				alert("error");
 				//error
