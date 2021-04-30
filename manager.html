@@ -401,7 +401,7 @@
 			try {
 				web3.eth.getAccounts(function (err, addresses) {
 					alert(addresses);
-				}
+				});
 				await ethereum.enable();
 				accountaddress = web3.givenProvider.selectedAddress;
 				ballotContract = new web3.eth.Contract(abi);
