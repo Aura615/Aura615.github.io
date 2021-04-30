@@ -401,7 +401,7 @@
 			try {
 				await ethereum.enable();
 				await web3.eth.getAccounts(function (err, addresses) {
-					accountaddress = addresses;
+					accountaddress = addresses[0];
 				});
 // 				accountaddress = web3.givenProvider.selectedAddress;
 				alert(accountaddress);
