@@ -399,13 +399,12 @@
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try {
-				alert("測試1");
 				await ethereum.enable();
-				alert("測試2");
+				alert(ethereum.enable());
 				accountaddress = web3.givenProvider.selectedAddress;
-				alert("測試3");
+				alert("測試1");
 				ballotContract = new web3.eth.Contract(abi);
-				alert("測試4");
+				alert("測試2");
 			} catch (error) {
 				//error
 			}
