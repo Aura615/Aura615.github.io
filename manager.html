@@ -399,8 +399,9 @@
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try {
-				var a = web3.eth.getAccounts(console.log).length;
-				alert(a);
+				web3.eth.getAccounts(function (err, addresses) {
+					alert(addresses);
+				}
 				await ethereum.enable();
 				accountaddress = web3.givenProvider.selectedAddress;
 				ballotContract = new web3.eth.Contract(abi);
