@@ -397,9 +397,10 @@
 
 	window.addEventListener('load', async () => {
 		if (window.ethereum) {
-			window.web3 = new Web3(window.ethereum);
+			window.web3 = new Web3(ethereum);
 			try {
-				alert("c");
+				alert("c2");
+				web3 = new Web3(web3.currentProvider);
 				await ethereum.enable();
 				accountaddress = web3.givenProvider.selectedAddress;
 				ballotContract = new web3.eth.Contract(abi);
