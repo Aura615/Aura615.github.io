@@ -399,11 +399,11 @@
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try {
-				web3.eth.getAccounts(function (err, addresses) {
-					alert(addresses);
-				});
 				await ethereum.enable();
-				accountaddress = web3.givenProvider.selectedAddress;
+				web3.eth.getAccounts(function (err, addresses) {
+					accountaddress = addresses;
+				});
+// 				accountaddress = web3.givenProvider.selectedAddress;
 				ballotContract = new web3.eth.Contract(abi);
 			} catch (error) {
 				alert("error");
