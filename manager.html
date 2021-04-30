@@ -399,9 +399,9 @@
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try {
-				alert("c");
+				alert("c2");
 				await ethereum.enable();
-				alert(web3.eth.accounts);
+				alert(web3.eth.accounts.address);
 				accountaddress = web3.givenProvider.selectedAddress;
 				alert("測試1");
 				ballotContract = new web3.eth.Contract(abi);
