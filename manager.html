@@ -400,11 +400,10 @@
 			window.web3 = new Web3(ethereum);
 			try {
 				await ethereum.enable();
-				await web3.eth.getAccounts(function (err, addresses) {
+				web3.eth.getAccounts(function (err, addresses) {
 					accountaddress = addresses[0];
 				});
 // 				accountaddress = web3.givenProvider.selectedAddress;
-				alert(accountaddress);
 				ballotContract = new web3.eth.Contract(abi);
 			} catch (error) {
 				alert("error");
