@@ -582,11 +582,11 @@
 		else{
 			var noSame = new Boolean(true);
 			await Ballot.methods.totalCandidate().call({from: accountaddress})
-			.then(function(result){
+			.then(async function(result){
 				console.log(result);
 				var num = result;
 				for(var i = 0; i < num; i++){
-					Ballot.methods.CandidateName(i+1).call({from: accountaddress}, function(error, result){
+					await Ballot.methods.CandidateName(i+1).call({from: accountaddress}, function(error, result){
 					    console.log(result);
 					    if(result == candidateName){
 						    noSame = false;
