@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>VOTE</title>
+        <link rel="stylesheet" href="main.css" />
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
+    </head>
+    <body>
+        <nav>
+            <ul class="home-tool">
+                <li><a href="home.html">HOME</a></li>
+                <li><a href="voter.html">VOTE</a></li>
+                <li><a href="manager.html">MANAGER</a></li>
+                <li><a href="result.html">RESULT</a></li>
+            </ul>
+        </nav>
+
+        <div id="contract_address">
+            <p>合約地址:<input id="address" type="text" />
+                <button onclick="Address()"> 確定</button>
+            </p>
+	    	<div id="not_time"></div>
+        </div>
+
+		<div id="Result">
+	    	<h4>投票結果</h4>
+	    	<h5 id="result"></h5>
+        </div>
+	
+        <script>
+			var abi = [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_ballotlaunch_Name",
+						"type": "string"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "candidate",
+						"type": "uint256"
+					}
+				],
+				"name": "candidateAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "voter",
+						"type": "address"
+					}
+				],
+				"name": "voteDone",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "voteEnded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "voteStarted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "voter",
+						"type": "address"
+					}
+				],
+				"name": "voterAdded",
+				"type": "event"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "CandidateName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "CandidateVotes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_candidateName",
+						"type": "string"
+					}
+				],
+				"name": "addCandidate",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_voterAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_voterName",
+						"type": "string"
+					}
+				],
+				"name": "addVoter",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "ballotlaunch_Name",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_choice",
+						"type": "uint256"
+					}
+				],
+				"name": "doVote",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "endVote",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "startVote",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "state",
+				"outputs": [
+					{
+						"internalType": "enum Ballot.State",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "totalCandidate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "totalVote",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "totalVoter",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "totalWinner",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "voterRegister",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "voterName",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "voted",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "winner",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "candidateName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "votesOwned",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}];
+			var contractAddress;
+			var accountaddress;
+			var web3 = new Web3();
+
+			$( document ).ready(function() {
+				$( "#Result" ).hide();
+				console.log("V2");
+			});
+
+	    	window.addEventListener('load', async () => {
+				if (window.ethereum) {
+					window.web3 = new Web3(ethereum);
+					try {
+						await ethereum.enable();
+
+						web3.eth.getAccounts(function (err, addresses) {
+							accountaddress = addresses[0];
+						});
+					} catch (error) {
+						alert("error");
+					}
+				}
+				else {
+					console.log("no MetaMask");
+					alert("請安裝MetaMask");
+				}
+	    	});
+           
+			function Address(){
+				contractAddress = $("#address").val();
+				Ballot = new web3.eth.Contract(abi, contractAddress);
+			
+				Ballot.methods.state().call({from: accountaddress})
+				.then(function(result){
+					if(result != 2){
+						document.getElementById("not_time").innerHTML="投票還沒結束";
+						console.log("not time");
+					}
+					else{
+						console.log("ended");
+						$( "#contract_address" ).hide();
+						$( "#Result" ).show();
+						
+						Ballot.methods.totalCandidate().call({from: accountaddress})
+						.then(async function(result){
+							console.log(result);
+							var num = result;
+							for(var i = 0; i < num; i++){
+								await Ballot.methods.CandidateName(i+1).call({from: accountaddress}, function(error, result){
+									console.log(result);
+									var name = document.createTextNode(result);
+									var data1 = document.getElementById("result");
+									data1.appendChild(name);
+								});
+
+								var symbol = document.createTextNode(" : ");
+								var data2 = document.getElementById("result");
+								data2.appendChild(symbol);
+								
+								await Ballot.methods.CandidateVotes(i+1).call({from: accountaddress}, function(error, result){
+									console.log(result);
+									var votes = document.createTextNode(result);
+									var data3 = document.getElementById("result");
+									data3.appendChild(votes);
+								});
+								
+								var enter = document.createTextNode("");
+								var div = document.createElement('div');
+								div.appendChild(enter);
+								var data4 = document.getElementById("result");
+								data4.appendChild(div);
+							}
+						});
+					}
+				});
+			}
+        </Script>
+    </body>
+</html>

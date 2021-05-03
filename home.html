@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TKU專題</title>
+        <link rel="stylesheet" href="main.css" />
+    </head>
+    <body>
+        <nav>
+            <ul class="home-tool">
+                <li><a href="home.html">HOME</a></li>
+                <li><a href="voter.html">VOTE</a></li>
+                <li><a href="manager.html">MANAGER</a></li>
+                <li><a href="result.html">RESULT</a></li>
+            </ul>
+        </nav>
+        <h1>Welcome!</h1>
+        <h2>功能介紹</h2>
+        
+        <button type="button" class ="button" onclick="home()">HOME</button>
+        <button type="button" class ="button" onclick="vote()">VOTER</button>
+        <button type="button" class ="button" onclick="manager()">MANAGER</button>
+        <button type="button" class ="button" onclick="result()">RESULT</button>
+
+        <p id="home"></p>
+        
+        <h2><marquee behavior="alternate"width="1000"><img src="image.jpg" weidth="300px" height="350px" /></marquee></h2>
+
+        <script>
+            function home(){
+                document.getElementById('home').innerHTML = '主頁面及功能介紹';
+            }
+            function vote(){
+                document.getElementById('home').innerHTML = '投票頁面，當投票開啟時，需先輸入要投票的合約地址，輸入完畢後便可以進行投票';
+            }
+            function manager(){
+                document.getElementById('home').innerHTML = '管理者頁面，可以建立投票、開啟投票及結束投票，而建立投票裡包含新增參選人及新增投票參與者';
+            }
+            function result(){
+                document.getElementById('home').innerHTML = '顯示投票結果頁面，當投票結束會顯示投票的結果';
+            }
+        </script>   
+    </body>
+</html>
